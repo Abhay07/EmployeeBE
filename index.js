@@ -29,7 +29,7 @@ const checkAuth = (req,res,next)=>{
 
 
 	if(!token) return res.status(401).send('User not authrized');
-	jwt.verify(token,config.secret,(err,decoded)=>{
+	jwt.verify(token,config,(err,decoded)=>{
 		if(err) return res.status(401).send('User not authorized');
 		db.collection('users').findOne({"_id":ObjectId(decoded.id)},(err,results)=>{
 			if (err) return res.status(404).send('User not found');
@@ -113,7 +113,7 @@ app.post('/token',(req,res)=>{
 		usersDb.insert({username:username,password:password},(err,result)=>{
 			if(err) return console.log(err);
 			const id = result.ops[0]._id;
-			const token = jwt.sign({id:id},config.secret,{
+			const token = jwt.sign({id:id},config,{
 				expiresIn:86399
 			})
 			res.send({token_type:'bearer',access_token:token, expires_in:86399});
