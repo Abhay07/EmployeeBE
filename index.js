@@ -54,6 +54,7 @@ app.options('/*',(req,res,next)=>{
 })
 
 app.get('/api/employees', (req,res)=>{
+	console.log('working');
 	employees = db.collection('employees');
 	employees.find({},function(err,results){
 		if(err || !results) return res.status(500).send();
