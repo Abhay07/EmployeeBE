@@ -54,12 +54,10 @@ app.options('/*',(req,res,next)=>{
 })
 
 app.get('/api/employees', (req,res)=>{
-	console.log('working');
 	employees = db.collection('employees');
-	employees.find({},function(err,results){
+	employees.find({}).toArray(function(err,results){
 		if(err || !results) return res.status(500).send();
-		const result = results.body ? results.body : [];
-		res.send(result);
+		res.send(results);
 	});
 });
 
@@ -81,7 +79,7 @@ app.post('/api/employees', checkAuth, (req,res)=>{
 		})
 	}
 	else{
-		db.collection('employees').insert({
+		db.collection('employees').insertOne({
 				Name:req.body.Name,
 				Surname:req.body.Surname
 			},
